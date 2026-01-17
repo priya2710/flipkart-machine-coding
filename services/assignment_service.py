@@ -28,9 +28,6 @@ class AssignmentService:
 
     def on_driver_available(self, driver_id: str):
         with self.lock:
-            # Mark driver available first (responsibility of DriverService, 
-            # but AssignmentService needs to know availability triggered)
-            # Assuming DriverService already updated status, now we just process queue.
             self._process_queue_unsafe()
 
     def _process_queue_unsafe(self):
@@ -42,7 +39,6 @@ class AssignmentService:
         if not available_drivers:
             return
 
-        # Simple FIFO matching
         while self.pending_orders and available_drivers:
             order_id = self.pending_orders[0] # Peek
             order = self.order_service.get_order(order_id)

@@ -3,13 +3,10 @@ from controllers.delivery_controller import DeliveryController
 from utils.logger import logger
 
 def peer_service():
-    logger.info("Initializing MVC System with Persistence (Refactored)...")
+    logger.info("Initializing System...")
     # Controller now handles view and service internally
     controller = DeliveryController()
-    # No direct view access in main.py, assume controller handles output via view
-    # But main.py might want to print section headers?
-    # I'll use logger for headers too.
-    logger.info("\n--- Onboarding (Idempotent) ---")
+    logger.info("\n--- Onboarding ---")
     try:
         controller.onboard_customer("C1", "Alice")
         controller.onboard_customer("C2", "Bob")
@@ -17,12 +14,11 @@ def peer_service():
         controller.onboard_driver("D2", "Eve")
     except Exception as e:
         logger.error(f"Error in onboarding: {e}")
+
     logger.info("\n--- Creating Orders ---")
     try:
         o1_id = controller.create_order("C1", "ITEM1")
-        # controller.create_order already shows status via view
         o3_id = controller.create_order("C1", "ITEM3", quantity=2)
-        # Test Guardrail
         logger.info("Testing Quantity Guardrail (100 items):")
         try:
             controller.create_order("C1", "ITEM1", quantity=100)
