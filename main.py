@@ -23,7 +23,7 @@ def peer_service():
         try:
             controller.create_order("C1", "ITEM1", quantity=100)
         except Exception as e:
-            pass
+            logger.error(f"Error in order creation: {e}")
         
         o2_id = controller.create_order("C2", "ITEM2")
         o3_repeated_id = controller.create_order("C1", "ITEM3")
@@ -43,8 +43,7 @@ def peer_service():
                 controller.complete_order("D1", o1_id)
 
     except Exception as e:
-        # View shows error, we catch to proceed
-        pass
+        logger.error(f"Error in pickup or delivery: {e}")
 
     logger.info("\n--- Cancellation Flow ---")
     try:
@@ -52,7 +51,7 @@ def peer_service():
         if 'o3_repeated_id' in locals():
             controller.cancel_order(o3_repeated_id)
     except Exception as e:
-        pass
+        logger.error(f"Error in cancellation: {e}")
 
     logger.info("\n--- Ratings ---")
     try:
@@ -60,7 +59,7 @@ def peer_service():
         if 'o1_id' in locals():
             controller.rate_driver(o1_id, 5)
     except Exception as e:
-        pass
+        logger.error(f"Error in rating: {e}")
 
 if __name__ == "__main__":
     peer_service()
