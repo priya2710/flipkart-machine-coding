@@ -1,9 +1,6 @@
 import time
-
 from controllers.delivery_controller import DeliveryController
-
 from utils.logger import logger
-
 
 def peer_service():
     logger.info("Initializing MVC System with Persistence (Refactored)...")
